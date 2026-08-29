@@ -1,4 +1,21 @@
+import re
+
 from faster_whisper import WhisperModel
+
+
+# Whisper invents these on silence or background noise.
+HALLUCINATIONS = {
+    "thank you",
+    "thank you.",
+    "thanks for watching",
+    "thank you for watching",
+    "thank you for watching.",
+    "you",
+    "bye",
+    ".",
+    "subtitles by the amara.org community",
+    "please subscribe",
+}
 
 
 class WhisperSTT:
@@ -26,24 +43,28 @@ class WhisperSTT:
             audio_path,
             language="en",
             beam_size=5,
-            vad_filter=True,
-            vad_parameters={
-                "threshold": 0.3,
-                "min_silence_duration_ms": 300,
-                "speech_pad_ms": 500,
-            },
+            vad_filter=False,
             condition_on_previous_text=False,
-            temperature=0.0,
-            no_speech_threshold=0.45,
+            temperature=[0.0, 0.2, 0.4],
+            no_speech_threshold=0.7,
+            log_prob_threshold=-1.5,
             initial_prompt=(
-                "Jarvis, open Chrome, open Notepad, open VS Code, "
-                "open Calculator, open Downloads."
+                "Jarvis, open Chrome. Open Notepad. Open VS Code. "
+                "Open Calculator. Open Downloads. What time is it?"
             ),
         )
 
         text = " ".join(
             segment.text.strip()
             for segment in segments
-        )
+        ).strip()
 
-        return text.strip()
+        if self._is_hallucination(text):
+            return ""
+
+        return text
+
+    def _is_hallucination(self, text: str) -> bool:
+        cleaned = re.sub(r"[^a-z0-9.\s]", "", text.lower()).strip()
+
+        return cleaned in HALLUCINATIONS

@@ -23,12 +23,24 @@ class VoicePipeline:
 
         audio_path = self.recorder.record_until_silence()
 
-        if not audio_path:
-            return ""
+        return self._transcribe(audio_path)
 
-        return self.whisper.transcribe(audio_path)
+    def listen_fixed(self, duration: float = 6) -> str:
+
+        audio_path = self.recorder.record_fixed(duration=duration)
+
+        return self._transcribe(audio_path)
 
     def speak(self, text: str):
 
         self.tts.speak(text)
-        time.sleep(0.5)
+        time.sleep(0.4)
+
+    def _transcribe(self, audio_path: str | None) -> str:
+
+        if not audio_path:
+            return ""
+
+        print("Transcribing...")
+
+        return self.whisper.transcribe(audio_path)

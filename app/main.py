@@ -7,6 +7,8 @@ from app.voice.voice_pipeline import VoicePipeline
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
+EXIT_WORDS = {"exit", "quit", "stop", "goodbye", "bye"}
+
 
 def main():
 
@@ -19,37 +21,50 @@ def main():
     print("=" * 60)
     print("Local AI Assistant")
     print(f"Model: {settings.ollama_model} (fallback: {settings.ollama_fallback_model})")
+    print(f"Microphone: {voice.recorder.device_name()}")
     print()
-    print("Speak when you see Listening...")
-    print("Say 'exit' or press Ctrl+C to stop.")
+    print("Press Enter to talk, or type your command and press Enter.")
+    print("Type 'exit' to stop.")
     print("=" * 60)
     print()
 
-    voice.speak("Ready. I am listening.")
+    voice.speak("Ready.")
 
     while True:
 
         try:
 
-            user_input = voice.listen()
+            typed = input("You (Enter to talk): ").strip()
 
-            print()
-            print("You:", user_input)
-            print()
-
-            if not user_input:
-                continue
-
-            if user_input.lower() in {"exit", "quit", "stop", "goodbye"}:
+            if typed.lower() in EXIT_WORDS:
                 voice.speak("Goodbye.")
                 break
+
+            if typed:
+                user_input = typed
+            else:
+                user_input = voice.listen_fixed(duration=6)
+
+                print()
+                print("You said:", user_input or "(nothing)")
+
+                if not user_input:
+                    print("Try again, a bit louder.")
+                    print()
+                    continue
+
+                if user_input.lower().strip(" .!?") in EXIT_WORDS:
+                    voice.speak("Goodbye.")
+                    break
 
             response = jarvis.ask(user_input)
 
             if not response:
                 response = "I heard you."
 
+            print()
             voice.speak(response)
+            print()
 
         except KeyboardInterrupt:
 
