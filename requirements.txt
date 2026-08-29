@@ -1,0 +1,8 @@
+ollama
+openai>=1.0
+python-dotenv
+pydantic-settings
+faster-whisper
+sounddevice
+numpy
+pyttsx3

@@ -1,0 +1,90 @@
+JARVIS — setup on another Windows PC
+====================================
+
+This folder has two setup files:
+
+  setup.bat     automatic install
+  SETUP.txt     these instructions
+
+
+WHAT YOU NEED FIRST
+-------------------
+
+1. Windows 10 or Windows 11
+2. Python 3.12 or newer
+   https://www.python.org/downloads/
+   During install, turn ON: Add python.exe to PATH
+3. Ollama
+   https://ollama.com/download
+4. A microphone and speakers / headphones
+
+
+HOW TO INSTALL
+--------------
+
+1. Clone this repo, or copy this whole folder to the new PC.
+
+2. Open the JARVIS folder in File Explorer.
+
+3. Double-click setup.bat
+
+   Or open Command Prompt in this folder and run:
+
+     setup.bat
+
+4. Wait until it says: Setup complete
+
+   setup.bat will:
+   - create venv
+   - install packages from requirements.txt
+   - create .env from .env.example if .env is missing
+   - download Ollama models:
+       glm-4.7-flash
+       qwen3.5:4b
+
+
+HOW TO START JARVIS
+-------------------
+
+Open Command Prompt in this folder and run:
+
+  venv\Scripts\activate
+  python -m app.main
+
+Speak when you see: Listening... speak now
+
+Say "exit" or press Ctrl+C to stop.
+
+
+FIRST RUN
+---------
+
+The first time you use voice, Whisper "small" downloads.
+After that it works offline, as long as Ollama is running.
+
+
+IF SOMETHING FAILS
+------------------
+
+Python was not found
+  Install Python 3.12+ and tick Add python.exe to PATH
+  Close and reopen Command Prompt, then run setup.bat again
+
+Ollama was not found
+  Install Ollama from https://ollama.com/download
+  Open Ollama, then run setup.bat again
+
+No speech / no voice
+  Check the microphone and speaker in Windows sound settings
+  Turn the volume up
+  Run python -m app.main again
+
+
+FILES
+-----
+
+  setup.bat       installer
+  SETUP.txt       this guide
+  requirements.txt
+  .env.example    default Ollama settings
+  .env            created on this PC by setup.bat (not in git)
