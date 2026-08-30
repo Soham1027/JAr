@@ -1,0 +1,109 @@
+JARVIS — how to run
+===================
+
+There are two ways to use JARVIS:
+
+  1. Web UI      browser interface with mic button and chat
+  2. Terminal    text / push-to-talk in the console
+
+Do the setup once first (see SETUP.txt), then use either one.
+
+
+BEFORE YOU START
+----------------
+
+1. Open the Ollama app and leave it running.
+   Without it, chat replies fail. (Commands like "open notepad"
+   still work, because they don't need the model.)
+
+2. Open a terminal in the JARVIS folder:
+
+     cd C:\Users\soham\Downloads\codes\JAR_WORK\JAr
+
+3. Activate the virtual environment:
+
+     venv\Scripts\activate
+
+   The prompt should now start with (venv).
+
+
+OPTION 1 — WEB UI  (recommended)
+--------------------------------
+
+Run:
+
+  python -m uvicorn app.web.server:app --port 8000
+
+Then open this address in Chrome:
+
+  http://127.0.0.1:8000
+
+How to use it:
+
+  - Click the mic button, or press the Spacebar, or click the orb
+  - Speak, then click it again to stop
+  - Or just type a command and press Enter
+  - JARVIS replies in the chat and speaks out loud
+  - "Clear" (top right) starts a fresh conversation
+
+To stop the server: press Ctrl+C in the terminal.
+
+
+OPTION 2 — TERMINAL
+-------------------
+
+Run:
+
+  python -m app.main
+
+How to use it:
+
+  - Press Enter to talk, then speak for 6 seconds
+  - Or type a command and press Enter
+  - Watch the mic [####----] meter while speaking;
+    if it stays empty, Windows is using the wrong microphone
+
+To stop: type "exit" or press Ctrl+C.
+
+
+THINGS TO TRY
+-------------
+
+  open notepad
+  open chrome
+  open downloads
+  open https://youtube.com
+  what can you do?
+
+
+IF SOMETHING FAILS
+------------------
+
+"Failed to connect to Ollama"
+  The Ollama app is not running. Open it and try again.
+
+"[Errno 10048] ... only one usage of each socket address"
+  Port 8000 is already used by an old server.
+  Either use a different port:
+
+    python -m uvicorn app.web.server:app --port 8001
+
+  or find and stop the old one:
+
+    netstat -ano | findstr :8000
+    taskkill /PID <the number at the end> /F
+
+"I didn't hear anything" / empty transcription
+  Speak closer and louder, right after you press Enter.
+  Check the correct microphone is the Windows default input.
+
+Browser doesn't ask for the microphone
+  Use http://127.0.0.1:8000 (not your LAN IP).
+  Chrome only allows mic access on localhost or HTTPS.
+
+No voice from JARVIS
+  Turn the volume up and check the output device.
+  In the web UI, the browser does the speaking.
+
+First voice use is slow
+  Whisper "small" downloads once, then it is local.

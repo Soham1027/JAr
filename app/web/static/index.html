@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>JARVIS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<div class="glow glow-a"></div>
+<div class="glow glow-b"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="dot"></span>
+    <h1>JARVIS</h1>
+  </div>
+  <div class="meta">
+    <span id="model-pill" class="pill">connecting…</span>
+    <button id="reset" class="ghost" title="Clear conversation">Clear</button>
+  </div>
+</header>
+
+<main class="stage">
+
+  <section class="orb-wrap">
+    <div id="orb" class="orb" role="button" tabindex="0" aria-label="Hold to speak">
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+      <div class="core"></div>
+      <div class="bars" id="bars">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+    <p id="status" class="status">Ready</p>
+  </section>
+
+  <section class="panel">
+    <div id="log" class="log">
+      <div class="msg jarvis">
+        <div class="who">JARVIS</div>
+        <div class="bubble">Systems online. Press the mic and speak, or type a command.</div>
+      </div>
+    </div>
+
+    <form id="composer" class="composer" autocomplete="off">
+      <button type="button" id="mic" class="mic" aria-label="Record">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3z"/>
+          <path d="M19 11a7 7 0 0 1-14 0M12 18v3"/>
+        </svg>
+      </button>
+      <input id="input" type="text" placeholder="Try: open chrome" />
+      <button type="submit" id="send" class="send">Send</button>
+    </form>
+
+    <div class="hints">
+      <button class="chip" data-cmd="open notepad">open notepad</button>
+      <button class="chip" data-cmd="open chrome">open chrome</button>
+      <button class="chip" data-cmd="open downloads">open downloads</button>
+      <button class="chip" data-cmd="what can you do?">what can you do?</button>
+    </div>
+  </section>
+
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
